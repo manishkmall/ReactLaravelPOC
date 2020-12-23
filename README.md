@@ -1,27 +1,27 @@
-##Setup Guidelines
+## Setup Guidelines
 install laravel 6.0 LTS
 
-setup database credential into .env file
+Setup database credential into .env file
 Run for Laravel install
-composer install
+- composer install
 
 install node modules- 
-npm install
+- npm install
 
 after that install migration by command line- 
-php artisan migrate
+- php artisan migrate
 
 generate passport key -
 
-php artisan passport:keys
-php artisan generate:key
+- php artisan passport:keys
+- php artisan generate:key
 
 
 after installation run these command to run the project- 
-php artisan serve 
-npm run watch
+- php artisan serve 
+- npm run watch
 
-##Feature Listing
+## Feature Listing
 - Registration
 - Login
 - Students 
@@ -31,15 +31,18 @@ npm run watch
       - Delete Student record
 - Logout
 
-##Tech Stack
-php7.2
-laravel 6 LTS as back-end
-react js with materialUI as front-end
-MySql as Database
+## Tech Stack
+- php7.2
+- laravel 6 LTS as back-end
+- react js with materialUI as front-end
+- MySql as Database
 
 ## Versions
 - laravel 6.0 LTS
 
+## Demo File Path
+
+- /demo/demo.mp4
 
 
 
