@@ -15,8 +15,8 @@ import Box from '@material-ui/core/Box';
 import axios from 'axios';
 import { BrowserRouter, Route, Switch, NavLink, Redirect } from "react-router-dom";
 import Header from './Header';
+import SimpleReactValidator from 'simple-react-validator';
 
-//import { browserHistory } from 'react-router';
 
 
 const styles = theme => ({
@@ -43,6 +43,7 @@ const styles = theme => ({
 class Login extends Component {
   constructor(props) {
     super(props);
+    this.validator = new SimpleReactValidator();
     this.state = {
       email: "",
       password: "",
@@ -70,6 +71,11 @@ class Login extends Component {
       'Accept': 'application/json'
     }
 
+    if (!this.validator.allValid()) {
+      this.validator.showMessages();
+      this.forceUpdate();
+      return false;
+    }
 
     axios.post(API_URL + '/login', formData, { headers: headers })
       .then(response => {
@@ -141,6 +147,7 @@ class Login extends Component {
                 autoFocus
                 onChange={this.handleFieldChange}
               />
+              {this.validator.message('email', this.state.email, 'required|email', { className: 'text-danger' })}
               <TextField
                 variant="outlined"
                 margin="normal"
@@ -153,6 +160,7 @@ class Login extends Component {
                 autoComplete="current-password"
                 onChange={this.handleFieldChange}
               />
+              {this.validator.message('password', this.state.password, 'required', { className: 'text-danger' })}
               {/* <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
                 label="Remember me"

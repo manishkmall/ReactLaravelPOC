@@ -21,6 +21,7 @@ import AlertDialog from './AlertDialog';
 import { Redirect } from "react-router-dom";
 import Header from './Header';
 import Alert from '@material-ui/lab/Alert';
+import SimpleReactValidator from 'simple-react-validator';
 
 
 const styles = theme => ({
@@ -60,7 +61,7 @@ const styles = theme => ({
 class List extends Component {
   constructor(props) {
     super(props)
-
+    this.validator = new SimpleReactValidator();
     this.state = {
       isDeleteModal: false,
       isAddEditModal: false,
@@ -171,6 +172,7 @@ class List extends Component {
     let stateCopy = Object.assign({}, this.state);
     stateCopy[e.target.name] = e.target.value;
     this.setState(stateCopy);
+   
   }
 
   handelSubmit(e) {
@@ -193,6 +195,12 @@ class List extends Component {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       'Authorization': 'Bearer ' + token
+    }
+
+    if (!this.validator.allValid()) {
+      this.validator.showMessages();
+      this.forceUpdate();
+      return false;
     }
 
     if (this.state.editId != "undefined" && this.state.editId > 0) {
@@ -293,6 +301,7 @@ class List extends Component {
      stateCopy['address'] = "";
      stateCopy['editId'] = 0;
      this.setState(stateCopy);
+     this.validator.hideMessages();
      
     
     }
@@ -388,6 +397,7 @@ class List extends Component {
                         value={this.state.first_name}
 
                       />
+                       {this.validator.message('first_name', this.state.first_name, 'required', { className: 'text-danger' })}
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <TextField
@@ -402,6 +412,7 @@ class List extends Component {
                         onChange={this.handleFieldChange}
                         value={this.state.last_name}
                       />
+                      {this.validator.message('last_name', this.state.last_name, 'required', { className: 'text-danger' })}
                     </Grid>
                     <Grid item xs={12}>
                       <TextField
@@ -416,6 +427,7 @@ class List extends Component {
                         onChange={this.handleFieldChange}
                         value={this.state.email}
                       />
+                      {this.validator.message('email', this.state.email, 'required|email', { className: 'text-danger' })}
                     </Grid>
                     <Grid item xs={12}>
                       <TextField
@@ -430,6 +442,7 @@ class List extends Component {
                         onChange={this.handleFieldChange}
                         value={this.state.phone}
                       />
+                       {this.validator.message('Contact_Number', this.state.phone, 'required|phone', { className: 'text-danger' })}
                     </Grid>
                     <Grid item xs={12}>
                       <TextField
@@ -444,6 +457,7 @@ class List extends Component {
                         onChange={this.handleFieldChange}
                         value={this.state.address}
                       />
+                      {this.validator.message('Address', this.state.address, 'required', { className: 'text-danger' })}
                     </Grid>
 
                   </Grid>

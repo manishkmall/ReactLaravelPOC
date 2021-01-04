@@ -3,8 +3,6 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-//import FormControlLabel from '@material-ui/core/FormControlLabel';
-//import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
@@ -12,13 +10,12 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-//import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { BrowserRouter, Route, Switch, NavLink, Redirect } from "react-router-dom";
+import SimpleReactValidator from 'simple-react-validator';
 
 import Header from './Header';
 
@@ -47,6 +44,7 @@ class Register extends Component {
 
   constructor(props) {
     super(props);
+    this.validator = new SimpleReactValidator();
     this.state = {
       first_name: "",
       last_name: "",
@@ -84,6 +82,11 @@ class Register extends Component {
       'Accept': 'application/json'
     }
 
+    if (!this.validator.allValid()) {
+      this.validator.showMessages();
+      this.forceUpdate();
+      return false;
+    }
 
     axios.post(API_URL + '/register', formData, { headers: headers })
       .then(response => {
@@ -164,6 +167,7 @@ class Register extends Component {
                     autoFocus
                     onChange={this.handleFieldChange}
                   />
+                  {this.validator.message('first_name', this.state.first_name, 'required', { className: 'text-danger' })}
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -176,6 +180,7 @@ class Register extends Component {
                     autoComplete="last_name"
                     onChange={this.handleFieldChange}
                   />
+                  {this.validator.message('last_name', this.state.last_name, 'required', { className: 'text-danger' })}
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
@@ -188,6 +193,7 @@ class Register extends Component {
                     autoComplete="email"
                     onChange={this.handleFieldChange}
                   />
+                  {this.validator.message('email', this.state.email, 'required|email', { className: 'text-danger' })}
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
@@ -200,6 +206,7 @@ class Register extends Component {
                     autoComplete="mobile"
                     onChange={this.handleFieldChange}
                   />
+                  {this.validator.message('Contact_Number', this.state.mobile, 'required|phone', { className: 'text-danger' })}
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
@@ -213,6 +220,7 @@ class Register extends Component {
                     autoComplete="current-password"
                     onChange={this.handleFieldChange}
                   />
+                  {this.validator.message('password', this.state.password, 'required|min:8', { className: 'text-danger' })}
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
@@ -226,6 +234,7 @@ class Register extends Component {
                     autoComplete="current-password"
                     onChange={this.handleFieldChange}
                   />
+                  {this.validator.message('confirm_password', this.state.c_password, 'required|min:8', { className: 'text-danger' })}
                 </Grid>
                 {/* <Grid item xs={12}>
               <FormControlLabel
